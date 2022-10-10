@@ -1,7 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { createSlice } from '@reduxjs/toolkit'
-
-
+import React from 'react';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 
 export const counterSlice = createSlice({
   name: 'counter',
@@ -25,4 +24,21 @@ export const store = configureStore({
   reducer: {
     counter: counterSlice.reducer
   },
-})
+});
+
+export function useStore() {
+    const count = useSelector((state) => state.count);
+    const dispatch = useDispatch();
+    return {
+        count,
+        increment: () => dispatch(increment()),
+        clear: () => dispatch(clear())
+    };
+}
+
+export function StoreProvider({ children }) {
+    return <Provider store={store}>
+        { children }
+    </Provider>
+}
+
